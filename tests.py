@@ -8,11 +8,11 @@ class TestBooksCollector:
 
     def test_books_genre_of_books_collector_true(self):
         collector = BooksCollector()
-        assert collector.books_genre == {}
+        assert collector.get_books_genre() == {}
 
     def test_favorites_of_books_collector_true(self):
         collector = BooksCollector()
-        assert collector.favorites == []
+        assert collector.get_list_of_favorites_books() == []
 
     def test_genre_of_books_collector_true(self):
         collector = BooksCollector()
@@ -55,10 +55,14 @@ class TestBooksCollector:
         append_one_book_in_books_genre.set_book_genre('Гордость и предубеждение и зомби', 'Ужасы')
         assert append_one_book_in_books_genre.get_book_genre('Гордость и предубеждение и зомби') == 'Ужасы'
 
-    @pytest.mark.parametrize('book_name, book_genre', [['12 стульев', 'Ужасы'], ['Гордость и предубеждение и зомби', 'Драма'], ['12 стульев', 'Приключения']])
+    @pytest.mark.parametrize('book_name, book_genre', [['12 стульев', 'Ужасы'], ['12 стульев', 'Приключения']])
     def test_set_book_genre_add_book_not_from_books_genre(self, append_one_book_in_books_genre, book_name, book_genre):
         append_one_book_in_books_genre.set_book_genre(book_name, book_genre)
-        assert append_one_book_in_books_genre.get_book_genre(book_name) == '' or append_one_book_in_books_genre.get_book_genre(book_name) == None
+        assert append_one_book_in_books_genre.get_book_genre(book_name) == None
+
+    def test_set_book_genre_add_book_not_from_genre(self, append_one_book_in_books_genre):
+        append_one_book_in_books_genre.set_book_genre('Гордость и предубеждение и зомби', 'Драма')
+        assert append_one_book_in_books_genre.get_book_genre('Гордость и предубеждение и зомби') == ''
 
     def test_get_books_with_specific_genre_for_five_book_group_by_genre(self, append_five_book_and_genre_in_books_genre):
         assert append_five_book_and_genre_in_books_genre.get_books_with_specific_genre('Комедии') == ['12 стульев', 'Золотой теленок', 'Трое в лодке'] \
@@ -99,13 +103,12 @@ class TestBooksCollector:
         assert len(append_five_book_with_other_genre.get_list_of_favorites_books()) == 1
 
     def test_delete_book_from_favorites_for_two_book(self, append_three_books_in_favorite):
-        append_three_books_in_favorite.delete_book_from_favorites('12 стульев')
         append_three_books_in_favorite.delete_book_from_favorites('Зов Ктулху')
-        assert append_three_books_in_favorite.get_list_of_favorites_books() == ['Алиса в стране чудес']
+        assert append_three_books_in_favorite.get_list_of_favorites_books() == ['12 стульев']
 
     def test_delete_book_from_favorites_for_one_book_not_from_favorite_books(self, append_three_books_in_favorite):
         append_three_books_in_favorite.delete_book_from_favorites('Незнайка')
-        assert append_three_books_in_favorite.get_list_of_favorites_books() == ['12 стульев', 'Зов Ктулху', 'Алиса в стране чудес']
+        assert append_three_books_in_favorite.get_list_of_favorites_books() == ['12 стульев', 'Зов Ктулху']
 
     def test_delete_book_from_favorites_from_empty_favorite_books_list(self, append_five_book_with_other_genre):
         append_five_book_with_other_genre.delete_book_from_favorites('Незнайка')

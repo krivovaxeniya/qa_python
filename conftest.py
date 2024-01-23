@@ -39,5 +39,4 @@ def append_three_books_in_favorite():
         collector.set_book_genre(el[0], el[1])
     collector.add_book_in_favorites('12 стульев')
     collector.add_book_in_favorites('Зов Ктулху')
-    collector.add_book_in_favorites('Алиса в стране чудес')
     return collector
